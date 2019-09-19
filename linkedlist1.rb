@@ -23,45 +23,73 @@ class Stack
 	end
 
 	#push(adding) a value onto the stack
-	def push(data)
+	def append(data)
 		current_node = @head  #starting point
+
 		while current_node.next?  #while true loop through so long as there is a next value
 			current_node = current_node.next_node #pointer to the next node (the variable is cycling until nil)
 		end
-		new_node = Node.new(data, nil) #new node with data being pushed
+		new_node = Node.new(data, nil) #new node with data being appended
 		current_node.next_node = new_node #new pointer becomes that new data
+	end
+
+	def push(data)
+		@head = Node.new(data, @head) #adding to the beginning
 	end
 
 	#pop(remove) an element to the stack
 	def pop
 	#I RETURN A VALUE
 	 #return the value in the stack until nil
-	 #when nil return "end of stack"....where does next_node go?
-	 if @data.value > nil
-	 	puts "#{@data.value}"
-	 else
-	 	return "End of stack"
+	 if @head.next_node == nil  #if the head is nil then return "nil"
+	 	return nil
+
+	 else   #if the value isn't nil return the next node value until the value is nil
+	 	return_value = @head
+	 	@head = @head.next_node
+	 	return return_value
+
 	 end
 	 
 	end
 
-end
+	def display
+		current_node = @head
+
+		while current_node.next?
+			p current_node.data
+			current_node = current_node.next_node
+		end
+		p current_node.data
+	end
 
 
-	def reverse_list(list)
-		#ADD CODE HERE
+	def reverse_list
+		current_node = @head 
+		previous_node = nil #set up the list with the opp values
+		next_node = nil
 
-		while list
-			#ADD CODE HERE
-			list = list.next_node
+		while current_node != nil
+			next_node = current_node.next_node #next node(pointer) setting it to the current node
+			current_node.next_node = previous_node #set pointer to prev node
+			previous_node = current_node #because you're going in rev the previous node becomes your curent node
+			current_node = next_node #pointing the current node to to the next value 
 		end
 		
-		#ADD CODE HERE
+		@head = previous_node  #prev node will become the new head of the stack
 
 	end
+
+
+end
 
 
 	stack = Stack.new(1)
 	stack.push(2)
 	stack.push(3)
-	p stack.head
+	stack.display
+	stack.reverse_list
+	stack.display
+
+
+
